@@ -34,8 +34,23 @@
 #; Question 4: Show that model of evaluation allows for combinations whose operators are compound expressions
 (define (a-plus-abs-b a b)
   (if (> b 0) + -) a b)
+  #; This isn't evaluating to what I expect. It seems to return variable b through all cases.
 
-#; Question 5: The differences between Normal and Applicative Order
+#; Question 5: Use the following two procedures to show that the target procedure is evaluated differently between Normal and Applicative order.
 (define (p) (p))
 (define (test x y)
   (if (= x 0) 0 y))
+
+        #; Target procedure
+        (test 0 (p))
+
+        #; Applicative Order eval (substitution)
+        (test 0 (p)) --> #; The if statement will eval to true. Since there is an
+                         #;   evaluation at each substitution, the if evals to
+                         #;   true, returning 0.
+
+        #; Normal Order eval (expand then reduce - lazy eval)
+        (test 0 (p)) --> #; Since normal order eval waits for an expression only
+                         #;   containing primitive operators, (p) will continually
+                         #;   be substituted with (p) causing the evaluation to
+                         #;   to enter an infinite loop.
